@@ -25,11 +25,40 @@ function operate(Operator, a, b){
     }
     return c
 }
+window.firstNum = "";
+window.secondNum = "";
+window.operator = "";
+window.firstTrueSecondFalse = true;
+window.selectingOperator = false;
+window.finished = false;
+window.result = 0;
+
+//------FOR TOMORROW: FIGURE OUT SCOPE---------;
+function addDigit(bID){
+    if(finished){
+        firstNum = ""; secondNum=""; finished=false;
+    }
+    if(!(firstTrueSecondFalse) && selectingOperator){
+        selectingOperator = false;
+    }
+    firstTrueSecondFalse ? (firstNum += bID):(secondNum += bID)
+}
+
+
+function selectOperator(bID){
+    if(finished){
+        firstNum=result; firstTrueSecondFalse = false; selectingOperator = true;
+    }
+    if(){
+
+    }
+
+}
 
 let numBtns = document.querySelectorAll('.number');
 numBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-        alert(btn.id)
+        addDigit(btn.id)
     })
 });
 let opBtns = document.querySelectorAll('.operator');
@@ -39,8 +68,6 @@ opBtns.forEach(btn => {
     })
 });
 
-let firstNum = "";
-let secondNum = "";
-let operator = "";
+
     
 
