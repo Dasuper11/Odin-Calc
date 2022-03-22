@@ -25,6 +25,8 @@ function operate(Operator, a, b){
     }
     return c
 }
+window.screenText = document.querySelector('#display');
+
 window.firstNum = "";
 window.secondNum = "";
 window.operator = "";
@@ -32,27 +34,52 @@ window.firstTrueSecondFalse = true;
 window.selectingOperator = false;
 window.finished = false;
 window.result = 0;
+screenText.textContent = "";
 
-//------FOR TOMORROW: FIGURE OUT SCOPE---------;
+
 function addDigit(bID){
     if(finished){
         firstNum = ""; secondNum=""; finished=false;
     }
-    if(!(firstTrueSecondFalse) && selectingOperator){
-        selectingOperator = false;
+    if((firstTrueSecondFalse) && selectingOperator){
+        selectingOperator = false; firstTrueSecondFalse = false;
     }
     firstTrueSecondFalse ? (firstNum += bID):(secondNum += bID)
+    firstTrueSecondFalse ? (screenText.textContent = firstNum):(screenText.textContent = secondNum)
 }
-
+function sequence(bID){
+    firstNum= "" + result; secondNum = ""; selectingOperator = true; finished = false;
+         operator= bID; screenText.textContent = bID; firstTrueSecondFalse = false;
+}
 
 function selectOperator(bID){
     if(finished){
-        firstNum=result; firstTrueSecondFalse = false; selectingOperator = true;
+        sequence(bID)
     }
-    if(){
-
+    if(!(firstTrueSecondFalse)){//shouldnt do anything after second starts
+        equals(); sequence(bID); return;
+    }
+    if(firstTrueSecondFalse){//during first, change to second and to selecting operator
+        selectingOperator = true; operator = bID; screenText.textContent = bID;
+    }
+    if(selectingOperator){//if already selecting operator, replace operator
+        operator= bID; screenText.textContent = bID;
     }
 
+}
+
+function clear(){
+    firstNum = ""; secondNum = ""; operator = ""; firstTrueSecondFalse = true;
+    selectingOperator = false; finished = false;
+    screenText.textContent = ""; result = 0;
+}
+
+function equals(){
+    if(!(firstTrueSecondFalse)){
+        result = operate(operator, parseInt(firstNum), parseInt(secondNum))
+        screenText.textContent = result;
+        finished = true; firstTrueSecondFalse = true;
+    }
 }
 
 let numBtns = document.querySelectorAll('.number');
@@ -64,10 +91,15 @@ numBtns.forEach(btn => {
 let opBtns = document.querySelectorAll('.operator');
 opBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-        alert(btn.classList)
+        selectOperator(btn.id);
     })
 });
 
+let eqlBtn = document.querySelector('#equals');
+let clrBtn = document.querySelector('#clear');
+
+eqlBtn.addEventListener('click', () =>{equals()})
+clrBtn.addEventListener('click', () => {clear()})
 
     
 
